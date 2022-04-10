@@ -227,6 +227,21 @@ union cvmx_helper_link_info __cvmx_helper_board_link_get(int ipd_port)
 		return result;
 	}
 
+	printk(KERN_INFO "SHAMS: __cvmx_helper_board_link_get ipd_port:%d, board_rev_major:%d \n", ipd_port, octeon_bootinfo->board_rev_major);
+
+	if (cvmx_sysinfo_get()->board_type == CVMX_BOARD_TYPE_UBNT_E300 
+		&& octeon_bootinfo->board_rev_major == 2) {
+		/* On ER-12(E302), CN7130 QSGMII1 to QCA8511 use force-link */
+		printk(KERN_INFO "SHAMS: BOARD_E302_MAJOR \n");
+		if ((ipd_port >= 16) && (ipd_port <=19)) {
+			printk(KERN_INFO "SHAMS: ipd_port:%d matched \n", ipd_port);
+			result.s.link_up = 1;
+			result.s.full_duplex = 1;
+			result.s.speed = 1000;
+			return result;
+		}
+	}
+	
 	if (OCTEON_IS_MODEL(OCTEON_CN3XXX)
 		   || OCTEON_IS_MODEL(OCTEON_CN58XX)
 		   || OCTEON_IS_MODEL(OCTEON_CN50XX)) {
