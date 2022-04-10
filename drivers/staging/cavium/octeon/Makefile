@@ -9,7 +9,7 @@ obj-$(CONFIG_OCTEON_SRIO_NEXUS)		+= octeon-srio-nexus.o
 obj-$(CONFIG_OCTEON3_ETHERNET)		+= octeon3-ethernet.o
 obj-$(CONFIG_OCTEON_MGMT_ETHERNET)	+= octeon_mgmt.o
 obj-$(CONFIG_OCTEON_POW_ONLY_ETHERNET)	+= octeon-pow-ethernet.o
-obj-$(CONFIG_OCTEON_ETHERNET)		+= octeon-ethernet.o
+obj-$(CONFIG_OCTEON_ETHERNET_STG)		+= octeon-ethernet.o
 obj-$(CONFIG_OCTEON_ETHERNET_MEM)	+= ethernet-mem.o
 obj-$(CONFIG_OCTEON_ETHERNET_COMMON)	+= octeon_common.o
 

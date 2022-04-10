@@ -1,4 +1,4 @@
 #
 # Makefile for the Cavium ethernet device drivers.
 #
-obj-$(CONFIG_NET_VENDOR_CAVIUM) += octeon/
+obj-$(CONFIG_OCTEON_ETHERNET_STG) += octeon/
