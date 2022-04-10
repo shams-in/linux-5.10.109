@@ -104,4 +104,10 @@ extern u64 cvm_oct_tx_poll_interval;
 
 extern int rx_napi_weight;
 
+#ifdef CONFIG_UBNT_E300
+extern int cvm_oct_get_vlan_aware_state(void);
+extern int cvm_oct_get_vlan_base_vid(void);
+extern int cvm_oct_get_vlan_switch0_vid(void);
+#endif /* CONFIG_UBNT_E300 */
+
 #endif

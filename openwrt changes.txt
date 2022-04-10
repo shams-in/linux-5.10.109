@@ -1,0 +1,17 @@
+openwrt changes
+
+// ---1
+// ---file: target/linux/octeon/image/Makefile
+
+define Device/ubnt_edgerouter-12
+  $(Device/ubnt_edgerouter-e300)
+  DEVICE_MODEL := EdgeRouter 12
+  DEVICE_DTS := cn7130_ubnt_edgerouter-12
+endef
+TARGET_DEVICES += ubnt_edgerouter-12
+
+// ---2
+
+// .conf
+CONFIG_TARGET_octeon_DEVICE_ubnt_edgerouter-12=y
+CONFIG_TARGET_PROFILE="DEVICE_ubnt_edgerouter-12"

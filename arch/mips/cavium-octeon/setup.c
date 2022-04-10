@@ -521,6 +521,12 @@ const char *octeon_board_type_string(void)
 	return octeon_system_type;
 }
 
+int octeon_board_major_rev(void)
+{
+	return octeon_bootinfo->board_rev_major;
+}
+EXPORT_SYMBOL(octeon_board_major_rev);
+
 const char *get_system_type(void)
 	__attribute__ ((alias("octeon_board_type_string")));
 

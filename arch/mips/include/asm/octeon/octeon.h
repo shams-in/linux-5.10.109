@@ -38,6 +38,7 @@ extern int octeon_usb_is_ref_clk(void);
 extern uint64_t octeon_get_clock_rate(void);
 extern u64 octeon_get_io_clock_rate(void);
 extern const char *octeon_board_type_string(void);
+extern int octeon_board_major_rev(void);
 extern const char *octeon_get_pci_interrupts(void);
 extern int octeon_get_southbridge_interrupt(void);
 extern int octeon_get_boot_coremask(void);
@@ -156,7 +157,8 @@ struct octeon_boot_descriptor {
 	uint8_t board_rev_minor;
 	uint8_t board_rev_major;
 	uint16_t board_type;
-
+#define BOARD_E302_MAJOR 2
+#define BOARD_E303_MAJOR 3
 	uint64_t unused1[4]; /* Not even filled in by bootloader. */
 
 	uint64_t cvmx_desc_vaddr;

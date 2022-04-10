@@ -86,6 +86,9 @@ int rx_napi_weight = 32;
 module_param(rx_napi_weight, int, 0444);
 MODULE_PARM_DESC(rx_napi_weight, "The NAPI WEIGHT parameter.");
 
+static int gindex = 0;
+static char *intf_remap_302[8] = {"eth11", "eth10", "eth8", "eth9", "itf0", "itf1", "itf2", "itf3"};
+
 /* Mask indicating which receive groups are in use. */
 int pow_receive_groups;
 
@@ -879,11 +882,18 @@ static int cvm_oct_probe(struct platform_device *pdev)
 				break;
 
 			case CVMX_HELPER_INTERFACE_MODE_SGMII:
+#ifdef CONFIG_UBNT_E300
+				if (octeon_board_major_rev() == BOARD_E302_MAJOR || octeon_board_major_rev() == BOARD_E303_MAJOR)
+					strcpy(dev->name, intf_remap_302[gindex++]);
+				else
+					strcpy(dev->name, "eth%d");
+#else
 				priv->phy_mode = PHY_INTERFACE_MODE_SGMII;
 				if (of_device_is_available(priv->of_node)) {
 					dev->netdev_ops = &cvm_oct_sgmii_netdev_ops;
 					strscpy(dev->name, "eth%d", sizeof(dev->name));
 				}
+#endif
 				break;
 
 			case CVMX_HELPER_INTERFACE_MODE_SPI:
@@ -1005,6 +1015,37 @@ static struct platform_driver cvm_oct_driver = {
 };
 
 module_platform_driver(cvm_oct_driver);
+
+#ifdef CONFIG_UBNT_E300
+static u16 vlan_base_vid=4086;;
+static u16 vlan_switch0_vid=4094;
+static u32 is_vlan_aware_enabled=0;
+inline int cvm_oct_get_vlan_aware_state(void)
+{
+	return is_vlan_aware_enabled;
+}
+EXPORT_SYMBOL(cvm_oct_get_vlan_aware_state);
+
+inline int cvm_oct_get_vlan_base_vid(void)
+{
+	return vlan_base_vid;
+}
+EXPORT_SYMBOL(cvm_oct_get_vlan_base_vid);
+
+inline int cvm_oct_get_vlan_switch0_vid(void)
+{
+	return vlan_switch0_vid;
+}
+EXPORT_SYMBOL(cvm_oct_get_vlan_switch0_vid);
+
+void cvm_oct_set_vlan_aware_cb(u32 status, u16 base_vid, u16 sw0_vid)
+{
+	vlan_base_vid = base_vid;
+	vlan_switch0_vid = sw0_vid;
+	is_vlan_aware_enabled = status;
+}
+EXPORT_SYMBOL(cvm_oct_set_vlan_aware_cb);
+#endif /* CONFIG_UBNT_E300 */
 
 MODULE_SOFTDEP("pre: mdio-cavium");
 MODULE_LICENSE("GPL");

@@ -150,6 +150,24 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
 	 */
 	prefetch(priv);
 
+#ifdef CONFIG_UBNT_E300
+	if (octeon_board_major_rev() == BOARD_E302_MAJOR ||
+		octeon_board_major_rev() == BOARD_E303_MAJOR) {
+		/* check vlan-aware state and do not pop tag with eth8-11 */
+		if (cvm_oct_get_vlan_aware_state()) {
+			if (priv->interface == 1) {
+				u16 vlan_tci = 0;
+				__vlan_get_tag(skb, &vlan_tci);
+				if (vlan_tci == cvm_oct_get_vlan_switch0_vid() &&
+					skb_vlan_tagged_multi(skb)) {
+					// Remove VID 0xffe when vlan_aware is enabled and skb has VID 0xffe.
+					__skb_vlan_pop(skb, &vlan_tci);
+				}
+			}
+		}
+	}
+#endif //CONFIG_UBNT_E300
+
 	/*
 	 * The check on CVMX_PKO_QUEUES_PER_PORT_* is designed to
 	 * completely remove "qos" in the event neither interface
