@@ -3,37 +3,115 @@
 #include "cn7130_ubnt_edgerouter-e300.dtsi"
 
 / {
-	compatible = "ubnt,edgerouter-6p", "cavium,cn7130";
-	model = "Ubiquiti EdgeRouter 6P";
+	compatible = "ubnt,edgerouter-12", "cavium,cn7130";
+	model = "Ubiquiti EdgeRouter 12";
 };
 
 &smi0 {
-	phy8: ethernet-phy@8 {
+	status = "okay";
+
+	ethernet-phy@0 {
+		reg = <0>;
 		device_type = "ethernet-phy";
-		interrupts = <17 8>;
-		interrupt-parent = <&gpio>;
-		compatible = "vitesse,vsc8514", "ethernet-phy-ieee802.3-c22";
-		reg = <8>;
+		cavium,qlm-trim = "6,sgmii";
+		compatible = "atheros,ar8033", "ethernet-phy-ieee802.3-c22";
 	};
 
-	phy9: ethernet-phy@9 {
+	ethernet-phy@1 {
+		reg = <1>;
+		device_type = "ethernet-phy";
+		cavium,qlm-trim = "6,sgmii";
+		compatible = "atheros,ar8033", "ethernet-phy-ieee802.3-c22";
+	};
+
+	ethernet-phy@2 {
+		reg = <2>;
+		device_type = "ethernet-phy";
+		cavium,qlm-trim = "6,sgmii";
+		compatible = "atheros,ar8033", "ethernet-phy-ieee802.3-c22";
+	};
+
+	ethernet-phy@3 {
+		reg = <3>;
+		device_type = "ethernet-phy";
+		cavium,qlm-trim = "6,sgmii";
+		compatible = "atheros,ar8033", "ethernet-phy-ieee802.3-c22";
+	};
+
+	phy4: ethernet-phy@4 {
+		vitesse,reg-init = <0x1f 0x0 0x10 0xe 0xfdff 0x0 0x1f 0x0 0x2 0x11 0xc3ff 0x3c00 0x1f 0x0 0x3 0x10 0xff7f 0x80 0x1f 0x0 0x0 0x17 0xf8ff 0x200 0x0 0x7fff 0x8000>;
+	};
+
+	phy5: ethernet-phy@5 {
+		sfp = <&sfp>;
+		vitesse,reg-init = <0x1f 0x0 0x10 0xe 0xfdff 0x0 0x1f 0x0 0x2 0x11 0xc3ff 0x3c00 0x1f 0x0 0x3 0x10 0xff7f 0x80 0x1f 0x0 0x0 0x17 0xf8ff 0x200 0x0 0x7fff 0x8000>;
+	};
+
+	phy6: ethernet-phy@6 {
+		vitesse,reg-init = <0x1f 0x0 0x10 0xe 0xfdff 0x0 0x1f 0x0 0x2 0x11 0xc3ff 0x3c00 0x1f 0x0 0x3 0x10 0xff7f 0x80 0x1f 0x0 0x0>;
+	};
+
+	phy7: ethernet-phy@7 {
+		vitesse,reg-init = <0x1f 0x0 0x10 0xe 0xfdff 0x0 0x1f 0x0 0x2 0x11 0xc3ff 0x3c00 0x1f 0x0 0x3 0x10 0xff7f 0x80 0x1f 0x0 0x0>;
+	};
+
+	ethernet-phy@8 {
+		reg = <8>;
+		interrupts = <17 8>;
+		interrupt-parent = <&gpio>;
+		compatible = "vitesse,vsc8514", "ethernet-phy-ieee802.3-c22";
+	};
+	
+	ethernet-phy@9 {
+		reg = <9>;
 		device_type = "ethernet-phy";
 		interrupts = <17 8>;
 		interrupt-parent = <&gpio>;
 		compatible = "vitesse,vsc8514", "ethernet-phy-ieee802.3-c22";
-		reg = <9>;
+	};
+
+	ethernet-phy@10 {
+		reg = <10>;
+		device_type = "ethernet-phy";
+		interrupts = <17 8>;
+		interrupt-parent = <&gpio>;
+		compatible = "vitesse,vsc8514", "ethernet-phy-ieee802.3-c22";
+	};
+
+	ethernet-phy@11 {
+		reg = <11>;
+		device_type = "ethernet-phy";
+		interrupts = <17 8>;
+		interrupt-parent = <&gpio>;
+		compatible = "vitesse,vsc8514", "ethernet-phy-ieee802.3-c22";
 	};
 };
 
 &pip {
 	interface@0 {
+		status = "okay";
+
 		ethernet@0 {
-			label = "lan5";
+			label = "lan11";
 			status = "okay";
-			phy-mode = "sgmii";
 			phy-handle = <&phy4>;
 			nvmem-cells = <&macaddr_eeprom_0>;
 			nvmem-cell-names = "mac-address";
+		};
+
+		ethernet@1 {
+			label = "lan10";
+			status = "okay";	
+		};
+
+		ethernet@2 {
+			label = "lan8";
+			status = "okay";
+		};
+
+		ethernet@3 {
+			label = "lan9";
+			status = "okay";
 		};
 	};
 
@@ -41,33 +119,90 @@
 		status = "okay";
 
 		ethernet@0 {
-			label = "lan3";
+			label = "itf0";
 			status = "okay";
-			phy-mode = "sgmii";
-			phy-handle = <&phy8>;
+			cavium,force_link_up,1000;
 			nvmem-cells = <&macaddr_eeprom_0>;
 			nvmem-cell-names = "mac-address";
 			mac-address-increment = <(4)>;
 		};
 
 		ethernet@1 {
-			label = "lan4";
+			label = "itf1";
 			status = "okay";
-			phy-mode = "sgmii";
-			phy-handle = <&phy9>;
+			cavium,force_link_up,1000;
 			nvmem-cells = <&macaddr_eeprom_0>;
 			nvmem-cell-names = "mac-address";
 			mac-address-increment = <(5)>;
 		};
+
+		ethernet@2 {
+			label = "itf2";
+			status = "okay";
+			cavium,force_link_up,1000;
+			nvmem-cells = <&macaddr_eeprom_0>;
+			nvmem-cell-names = "mac-address";
+			mac-address-increment = <(6)>;
+		};
+
+		ethernet@3 {
+			label = "itf3";
+			status = "okay";
+			cavium,force_link_up,1000;
+			nvmem-cells = <&macaddr_eeprom_0>;
+			nvmem-cell-names = "mac-address";
+			mac-address-increment = <(7)>;
+		};
 	};
 };
 
-&eeprom {
-	compatible = "nvmem-cells";
-	#address-cells = <1>;
-	#size-cells = <1>;
+&uctl {
+	status = "okay";
+}
 
-	macaddr_eeprom_0: macaddr@0 {
-		reg = <0x0 0x6>;
+&usb0 {
+	status = "okay";
+	refclk-type-ss = "dlmc_ref_clk0";
+	xhci0: xhci@1680000000000 {
+		status = "okay";
 	};
 };
+
+&usb1 {
+	status = "okay";
+	refclk-type-ss = "dlmc_ref_clk0";
+	xhci1: xhci@1690000000000 {
+		status = "okay";
+	}
+};
+
+&twsi1 {
+	status = "okay";
+
+	psu@40 {
+		reg = <64>;
+		compatible = "isl28022,isl28022";
+	};
+
+	sensor2@4c {
+		reg = <76>;
+		#size-cells = <0x0>;
+		#address-cells = <0x1>;
+		compatible = "tmp421,tmp421";
+	};
+
+	sensor1@2e {
+		reg = <46>;
+		#size-cells = <0x0>;
+		#address-cells = <0x1>;
+		compatible = "adt7475,adt7475";
+	};
+};
+
+&uart1 {
+	status = "okay";
+};
+
+&ocla0 {
+	status = "okay";
+}

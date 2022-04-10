@@ -15,3 +15,16 @@ TARGET_DEVICES += ubnt_edgerouter-12
 // .conf
 CONFIG_TARGET_octeon_DEVICE_ubnt_edgerouter-12=y
 CONFIG_TARGET_PROFILE="DEVICE_ubnt_edgerouter-12"
+
+Firmware:
+
+todo: [vitesse.c] for dts ethernet-phy@x { optical-media-type = "1000bx"; }
+
+/* 9. If Fiber Media on all 4 PHYs configure register 18G by
+		 *    writing:
+		 *    Media 1000BX: 0x8FC1
+		 *    Media 100FX: 0x8FD1
+		 */
+		media_type = fdt_getprop(gd->fdt_blob, phy_node_offset,
+					 "optical-media-type", NULL);
+
